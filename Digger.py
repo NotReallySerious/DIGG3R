@@ -17,7 +17,7 @@ def subdomain_finder():
     import time
     url = input("Insert URL: ").strip().replace("http://", "").replace("https://", "").strip("/")
     # Use RAW GitHub link for the actual wordlist
-    wordlist_url = 'https://raw.githubusercontent.com/danielmiessler/SecLists/master/Discovery/DNS/combined_subdomains.txt'
+    wordlist_url = 'https://github.com/NotReallySerious/DIGG3R/blob/main/wordlist.txt'
     output = f"{url.replace('.', '_')}_subdomains.txt"
 
     try:
@@ -83,7 +83,7 @@ def username_search():
     name = input("Enter the Username: ")
     encoded_name = urllib.parse.quote(name)
     output = f"{name}_report.txt"
-    link_db_path = 'tools/link_lists.txt'
+    link_db_path = '../DIGG3R/link_lists.txt'
 
     # Generate a fake username to detect wildcard pages
     fake_username = 'nonexistentuser1234567890'
@@ -122,9 +122,10 @@ def username_search():
         print(Fore.RED + "[-] No real accounts found. All hits matched wildcard patterns.")
     else:
         print(Fore.YELLOW + f"[+] Found {found_count} username(s). Output file created.")
+        
 def main():
     os.system('cls' if os.name == 'nt' else 'clear')
-    banner = pyfiglet.figlet_format("DIGG3R", font="slant")
+    banner = pyfiglet.figlet_format("DIGG3R", font="smslant")
     print(Fore.CYAN + banner)
     print(Fore.YELLOW + "=" * 60)
     print(Fore.CYAN + "  Author     : MrHoodie")
