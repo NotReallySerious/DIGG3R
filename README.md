@@ -1,6 +1,6 @@
 # <i>DIGG3R</i>
 
-![DIGG3R Banner](images/banner.png)
+![DIGG3R Banner](https://github.com/NotReallySerious/DIGG3R/blob/main/IMAGE.png)
 
 
 ![DIGG3R Banner](https://img.shields.io/badge/status-active-brightgreen?style=flat-square)
