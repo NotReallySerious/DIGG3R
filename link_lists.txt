@@ -74,7 +74,6 @@ https://www.oid.ojk.go.id/authentication?user={}
 https://www.lazada.co.id/shop/{}               
 https://www.blibli.com/u/{}                    
 https://kaskus.co.id/profile/{}                
-https://id.answers.yahoo.com/myprofile.jsp?au={}&p={}  
 https://medium.com/@{}?locale=id              
 https://www.instagram.com/{}/?hl=id           
 https://twitter.com/{}?lang=id                
