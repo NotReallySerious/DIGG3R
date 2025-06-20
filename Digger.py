@@ -16,7 +16,6 @@ def hash_content(text):
 def subdomain_finder():
     import time
     url = input("Insert URL: ").strip().replace("http://", "").replace("https://", "").strip("/")
-    # Use RAW GitHub link for the actual wordlist
     wordlist_url = 'https://github.com/NotReallySerious/DIGG3R/blob/main/wordlist.txt'
     output = f"{url.replace('.', '_')}_subdomains.txt"
 
@@ -55,7 +54,6 @@ def subdomain_finder():
                         found_count += 1
                 except rq.RequestException:
                     pass
-            # Optional: rate limit to avoid blocking
             time.sleep(0.1)
             for protocol in ['http://','https://']:
                 full_url = f"{protocol}{url}/{subs}"
@@ -68,7 +66,6 @@ def subdomain_finder():
                         found_count += 1
                 except rq.RequestException:
                     pass
-            # Optional: rate limit to avoid blocking
             time.sleep(0.1)
 
 
