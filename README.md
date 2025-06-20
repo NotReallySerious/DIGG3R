@@ -32,6 +32,12 @@ pip3 install -r requirements.txt
 ```
 
 ---
+
+## ⚠️⚠️⚠️ IF YOU DOWNLOADED IT AS ZIP, PLEASE READ THESE INSTRUCTIONS !!!! 
+1. Open the Digger.py file in a code editor or a text editor.
+2. Look into the code, and find these lines <b>wordlist_path</b> and <b>link_db_path</b>
+3. Change the path from <b>../DIGG3R/<b> to <b>../DIGG3R-main/</b>
+
 ## Usage:
 ```python
 python3 Digger.py
