@@ -1,5 +1,4 @@
-import pandas as pd
-from bs4 import BeautifulSoup
+import socket
 import requests as rq
 import urllib.parse
 import colorama
@@ -14,65 +13,52 @@ def hash_content(text):
     return hashlib.md5(text.encode()).hexdigest()
 
 def subdomain_finder():
-    import time
-    url = input("Insert URL: ").strip().replace("http://", "").replace("https://", "").strip("/")
-    wordlist_url = 'https://github.com/NotReallySerious/DIGG3R/blob/main/wordlist.txt'
-    output = f"{url.replace('.', '_')}_subdomains.txt"
+    url = input("Insert URL (e.g., wikipedia.org):").strip()
+    wordlist_path = '../DIGG3R/wordlist.txt'
+    output = f"{url.replace('.', '_')}_subdomains_with_ips.txt"
 
     try:
-        print("[+] Downloading wordlist...")
-        response = rq.get(wordlist_url, timeout=10)
-        subdomains = response.text.splitlines()
-    except Exception as e:
-        print(Fore.RED + f"[!] Failed to download wordlist: {e}")
+        with open(wordlist_path, 'r') as file:
+            subdomains = file.read().splitlines()
+    except FileNotFoundError:
+        print("File not found.")
         return
-
-    if not subdomains:
-        print(Fore.RED + "[-] Wordlist is empty.")
-        return
-
-    # Wildcard detection
-    try:
-        wildcard_test = rq.get(f"http://xyz-notreal-subdomain.{url}", timeout=5)
-        wildcard_hash = hash_content(wildcard_test.text)
-    except:
-        wildcard_hash = None
-
-    found_count = 0
 
     with open(output, 'w') as out:
-        print(Fore.YELLOW + "\n[+] Searching for Subdomains...\n" + Style.RESET_ALL)
+        print("\n[+] Slowly searching for subdomains (stealth mode)...\n")
         for subs in subdomains:
-            for protocol in ['http://','https://']:
-                full_url = f"{protocol}{subs}.{url}"
+            full_subdomain = f"{subs}.{url}"
+            for protocol in ["http://", "https://"]:
+                full_url = f"{protocol}{full_subdomain}"
                 try:
                     resp = rq.get(full_url, timeout=5)
-                    current_hash = hash_content(resp.text)
-                    if resp.status_code not in [200,400] and current_hash != wildcard_hash:
-                        print(f"{Fore.GREEN}[FOUND]{Style.RESET_ALL} {full_url} (Status: {resp.status_code})")
-                        out.write(full_url + '\n')
-                        found_count += 1
-                except rq.RequestException:
-                    pass
-            time.sleep(0.1)
-            for protocol in ['http://','https://']:
-                full_url = f"{protocol}{url}/{subs}"
+                    if resp.status_code < 400:
+                        try:
+                            ip = socket.gethostbyname(full_subdomain)
+                        except socket.gaierror:
+                            ip = "IP not found"
+                        print(f"[FOUND] {full_url} -> {ip} (Status: {resp.status_code})")
+                        out.write(f"{full_url} -> {ip} (Status: {resp.status_code})\n")
+                except rq.exceptions.RequestException:
+                    pass  # silently skip unreachable subdomains
+        for subs in subdomains:
+            full_subdomain = f"{url}/{subs}"
+            for protocol in ["http://", "https://"]:
+                full_url = f"{protocol}{full_subdomain}"
                 try:
                     resp = rq.get(full_url, timeout=5)
-                    current_hash = hash_content(resp.text)
-                    if resp.status_code < 400 and current_hash != wildcard_hash:
-                        print(f"{Fore.GREEN}[FOUND]{Style.RESET_ALL} {full_url} (Status: {resp.status_code})")
-                        out.write(full_url + '\n')
-                        found_count += 1
-                except rq.RequestException:
-                    pass
-            time.sleep(0.1)
+                    if resp.status_code < 400:
+                        try:
+                            ip = socket.gethostbyname(full_subdomain)
+                        except socket.gaierror:
+                            ip = "IP not found"
+                        print(f"[FOUND] {full_url} -> {ip} (Status: {resp.status_code})")
+                        out.write(f"{full_url} -> {ip} (Status: {resp.status_code})\n")
+                except rq.exceptions.RequestException:
+                    pass  # silently skip unreachable subdomains
+            
 
-
-    if found_count == 0:
-        print(Fore.RED + "[-] No valid subdomains found. Try a larger or more accurate wordlist.")
-    else:
-        print(Fore.YELLOW + f"\n[+] Found {found_count} subdomain(s). Output file has been created.\n")
+    print(f"\n[✓] Scan complete. Results saved to: {output}")
 
 
 def username_search():
