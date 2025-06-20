@@ -1,6 +1,3 @@
-pandas
-beautifulsoup4
 requests
-figlet
+pyfiglet
 colorama
-os
