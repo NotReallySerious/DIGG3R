@@ -28,7 +28,7 @@ DIGG3R is a simple yet powerful tool designed for ethical hackers and cybersecur
 ```bash
 git clone https://github.com/NotReallySerious/Digg3r.git
 cd Digg3r
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 
 ---
